@@ -1,7 +1,6 @@
 package main
 
 import (
-	"app/src"
 	"testing"
 )
 
@@ -19,7 +18,7 @@ func TestValidateArgs_pass_invalid_number_of_args_expect_error(t *testing.T) {
 		{true, []string{"", "", "", "", "", "", ""}},
 	}
 	for _, tt := range tests {
-		err := src.ValidateNumArgs(tt.args)
+		err := ValidateNumArgs(tt.args)
 		if tt.isErr {
 			if err == nil {
 				t.Error("expected a error but we didnt get one")
@@ -34,7 +33,7 @@ func TestValidateArgs_pass_invalid_number_of_args_expect_error(t *testing.T) {
 
 func TestValidateArgs_passing_valid_number_of_args_expect_nil(t *testing.T) {
 	args := []string{"", "", "", "", "", ""}
-	err := src.ValidateNumArgs(args)
+	err := ValidateNumArgs(args)
 	if err != nil {
 		t.Errorf("received an error where we didnt expected %s", err)
 	}
@@ -42,14 +41,14 @@ func TestValidateArgs_passing_valid_number_of_args_expect_nil(t *testing.T) {
 
 func TestCheckArgLen_passing_two_digits_expect_error(t *testing.T) {
 	test := "10"
-	err := src.CheckArgLen(test)
+	err := CheckArgLen(test)
 	if err == nil {
 		t.Error(err)
 	}
 }
 func TestCheckArgLen_passing_multiple_digits_expect_error(t *testing.T) {
 	test := "4096"
-	err := src.CheckArgLen(test)
+	err := CheckArgLen(test)
 	if err == nil {
 		t.Error(err)
 	}
@@ -59,7 +58,7 @@ func TestIsValidArg_passing_invalid_arg_expect_false(t *testing.T) {
 	expected := false
 	symbols := []int{'_', '"', '?', '>', '.', '!', '<', '=', '~', '`', ' ', '#'}
 	for _, symbol := range symbols {
-		got := src.IsValidArg(symbol)
+		got := IsValidArg(symbol)
 		if got != expected {
 			t.Errorf("expected %t but got %t", expected, got)
 		}
@@ -69,7 +68,7 @@ func TestIsValidArg_passing_valid_args_expect_true(t *testing.T) {
 	expected := true
 	symbols := []int{'+', '-', '*', '/'}
 	for _, symbol := range symbols {
-		got := src.IsValidArg(symbol)
+		got := IsValidArg(symbol)
 		if got != expected {
 			t.Errorf("expected %t but got %t", expected, got)
 		}
@@ -80,7 +79,7 @@ func TestCheckWhetherArgIsDigit_passing_nondigit_arg_expect_false(t *testing.T) 
 	expected := false
 	symbols := []int{'_', '\'', '#', ',', ' ', '=', '<', '?', '>', '!', '"', 'x', '-', '+', '*', '/', -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 	for _, symbol := range symbols {
-		got := src.IsDigit(symbol)
+		got := IsDigit(symbol)
 		if got != expected {
 			t.Errorf("expected %t but got %t (%c is valid)", expected, got, symbol)
 		}
@@ -91,7 +90,7 @@ func TestCheckWhetherArgIsDigit_passing_digit_arg_expect_true(t *testing.T) {
 	expected := true
 	symbols := []int{'1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 48, 49, 50, 51, 52, 53, 54, 55, 56, 57}
 	for _, symbol := range symbols {
-		got := src.IsDigit(symbol)
+		got := IsDigit(symbol)
 		if got != expected {
 			t.Errorf("expected %t but got %t (%c is invalid)", expected, got, symbol)
 		}
@@ -111,7 +110,7 @@ func TestValidateArguments_passing_valid_args_expect_nil(t *testing.T) {
 		{[]string{"8", "*", "9", "-", "3", "0"}}, // 42
 	}
 	for i, tt := range tests {
-		err := src.ValidateArguments(tt.args)
+		err := ValidateArguments(tt.args)
 		if err != nil {
 			t.Errorf("test %d: got error `%s` where we didnt expected", i, err)
 		}
@@ -153,7 +152,7 @@ func TestValidateArguments_passing_invalid_args_expect_error(t *testing.T) {
 		{[]string{"2", "0", "+", "2", "2", "*"}},
 	}
 	for i, tt := range tests {
-		err := src.ValidateArguments(tt.args)
+		err := ValidateArguments(tt.args)
 		if err == nil {
 			t.Errorf("test %d: expected error. didnt get one", i)
 		}
@@ -168,7 +167,7 @@ func TestCheckFirstSpot_passing_invalid_first_args_expect_error(t *testing.T) {
 		{[]string{"/", "0", "0", "0", "0"}},
 	}
 	for i, tt := range tests {
-		if err := src.CheckFirstSpot(tt.args); err == nil {
+		if err := CheckFirstSpot(tt.args); err == nil {
 			t.Errorf("test %d: expected error. didnt get one", i)
 		}
 	}
@@ -186,7 +185,7 @@ func TestCheckFirstSpot_passing_valid_first_args(t *testing.T) {
 		{[]string{"1", "*", "1", "0", "1"}},
 	}
 	for i, tt := range tests {
-		if err := src.CheckFirstSpot(tt.args); err != nil {
+		if err := CheckFirstSpot(tt.args); err != nil {
 			t.Errorf("test %d: receive error `%s` where we didnt expected", i, err)
 		}
 	}
@@ -202,7 +201,7 @@ func TestCheckLastSpot_passing_invalid_last_args_expect_error(t *testing.T) {
 		{[]string{"0", "0", "0", "0", "/"}},
 	}
 	for i, tt := range tests {
-		if err := src.CheckLastSpot(tt.args); err == nil {
+		if err := CheckLastSpot(tt.args); err == nil {
 			t.Errorf("test %d: expected error. didnt get one", i)
 		}
 	}
@@ -218,7 +217,7 @@ func TestCheckLastSpot_passing_valid_last_args(t *testing.T) {
 		{[]string{"5", "*", "1", "0", "1"}},
 	}
 	for i, tt := range tests {
-		if err := src.CheckLastSpot(tt.args); err != nil {
+		if err := CheckLastSpot(tt.args); err != nil {
 			t.Errorf("test %d: receive error `%s` where we didnt expected", i, err)
 		}
 	}

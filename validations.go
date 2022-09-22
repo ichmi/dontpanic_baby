@@ -1,4 +1,4 @@
-package src
+package main
 
 import (
 	"errors"
@@ -21,10 +21,7 @@ func CheckArgLen(s string) error {
 }
 
 func IsDigit(ch int) bool {
-	if unicode.IsDigit(rune(ch)) {
-		return true
-	}
-	return false
+	return unicode.IsDigit(rune(ch))
 }
 func IsValidArg(ch int) bool {
 	if (ch == '+' || ch == '-' || ch == '*' || ch == '/') || IsDigit(ch) {
