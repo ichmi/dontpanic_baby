@@ -16,6 +16,6 @@ func main() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	fmt.Println("num", numbers)
-	fmt.Println("ops", operators)
+	fmt.Println(numbers)
+	fmt.Println(operators)
 }

@@ -658,56 +658,56 @@ func TestGetValuesBefore_passing_numerical_values_only(t *testing.T) {
 	}
 }
 
-func TestCalculateOnce_passing_single_equations_expect_its_values(t *testing.T) {
-	expected := []int{42, 101, 200, 1005, 123456, 100, 200, 5, 10000, 2000, 2, 4, 9, 0, 3000}
-	var tests = []struct {
-		args []string
-	}{
-		{strings.Split("0 0 5 0 - 8", " ")},
-		{strings.Split("1 0 0 + 0 1", " ")},
-		{strings.Split("1 0 1 + 9 9", " ")},
-		{strings.Split("5 + 1 0 0 0", " ")},
-		{strings.Split("1 2 3 4 5 6", " ")},
-		{strings.Split("1 2 3 - 2 3", " ")},
-		{strings.Split("1 0 0 0 / 5", " ")},
-		{strings.Split("1 * 0 0 0 5", " ")},
-		{strings.Split("2 * 5 0 0 0", " ")},
-		{strings.Split("2 0 * 1 0 0", " ")},
-		{strings.Split("1 0 / 0 0 5", " ")},
-		{strings.Split("9 / 0 0 0 2", " ")},
-		{strings.Split("9 / 0 0 0 1", " ")},
-		{strings.Split("9 / 1 0 0 0", " ")},
-		{strings.Split("9 0 0 0 / 3", " ")},
-	}
-	for i, tt := range tests {
-		numbers, operators, _ := InitGameStructure(tt.args)
-		got, _ := CalculateOnce(numbers, operators)
-		if got != expected[i] {
-			t.Errorf("test %d: expected %v but got %v", i, expected, got)
-		}
-	}
-}
+// func TestCalculateOnce_passing_single_equations_expect_its_values(t *testing.T) {
+// 	expected := []int{42, 101, 200, 1005, 123456, 100, 200, 5, 10000, 2000, 2, 4, 9, 0, 3000}
+// 	var tests = []struct {
+// 		args []string
+// 	}{
+// 		{strings.Split("0 0 5 0 - 8", " ")},
+// 		{strings.Split("1 0 0 + 0 1", " ")},
+// 		{strings.Split("1 0 1 + 9 9", " ")},
+// 		{strings.Split("5 + 1 0 0 0", " ")},
+// 		{strings.Split("1 2 3 4 5 6", " ")},
+// 		{strings.Split("1 2 3 - 2 3", " ")},
+// 		{strings.Split("1 0 0 0 / 5", " ")},
+// 		{strings.Split("1 * 0 0 0 5", " ")},
+// 		{strings.Split("2 * 5 0 0 0", " ")},
+// 		{strings.Split("2 0 * 1 0 0", " ")},
+// 		{strings.Split("1 0 / 0 0 5", " ")},
+// 		{strings.Split("9 / 0 0 0 2", " ")},
+// 		{strings.Split("9 / 0 0 0 1", " ")},
+// 		{strings.Split("9 / 1 0 0 0", " ")},
+// 		{strings.Split("9 0 0 0 / 3", " ")},
+// 	}
+// 	for i, tt := range tests {
+// 		numbers, operators, _ := InitGameStructure(tt.args)
+// 		got, _ := CalculateOnce(numbers, operators)
+// 		if got != expected[i] {
+// 			t.Errorf("test %d: expected %v but got %v", i, expected, got)
+// 		}
+// 	}
+// }
 
-func TestCalculateOnce_passing_division_by_zero_expect_error(t *testing.T) {
-	var tests = []struct {
-		args []string
-	}{
-		{strings.Split("1 0 0 0 / 0", " ")},
-		{strings.Split("1 / 0 0 0 0", " ")},
-		{strings.Split("0 0 0 0 / 0", " ")},
-		{strings.Split("0 / 0 0 0 0", " ")},
-		{strings.Split("1 0 / 0 0 0", " ")},
-		{strings.Split("9 / 0 0 0 0", " ")},
-		{strings.Split("9 0 0 / 0 0", " ")},
-	}
-	for i, tt := range tests {
-		numbers, operators, _ := InitGameStructure(tt.args)
-		_, err := CalculateOnce(numbers, operators)
-		if err == nil {
-			t.Errorf("test %d: expected error. but we didnt get", i)
-		}
-	}
-}
+// func TestCalculateOnce_passing_division_by_zero_expect_error(t *testing.T) {
+// 	var tests = []struct {
+// 		args []string
+// 	}{
+// 		{strings.Split("1 0 0 0 / 0", " ")},
+// 		{strings.Split("1 / 0 0 0 0", " ")},
+// 		{strings.Split("0 0 0 0 / 0", " ")},
+// 		{strings.Split("0 / 0 0 0 0", " ")},
+// 		{strings.Split("1 0 / 0 0 0", " ")},
+// 		{strings.Split("9 / 0 0 0 0", " ")},
+// 		{strings.Split("9 0 0 / 0 0", " ")},
+// 	}
+// 	for i, tt := range tests {
+// 		numbers, operators, _ := InitGameStructure(tt.args)
+// 		_, err := CalculateOnce(numbers, operators)
+// 		if err == nil {
+// 			t.Errorf("test %d: expected error. but we didnt get", i)
+// 		}
+// 	}
+// }
 
 func TestIsAvaiableInSolution_passing_NA_arg_expect_false(t *testing.T) {
 	expected := false
@@ -926,55 +926,279 @@ func TestSiToSs_passing_slice_of_ints_expect_slice_of_strings(t *testing.T) {
 	}
 }
 
-func TestCalculatePrecedenceFirst_passing_precedence_arg_expect_value_of_mult_div_only(t *testing.T) {
-	expected := []int{80, 0, 8, 35, 0, 3}
+// func TestCalculatePrecedenceFirst_passing_precedence_arg_expect_value_of_mult_div_only(t *testing.T) {
+// 	expected := []int{80, 0, 8, 35, 0, 3}
+// 	var tests = []struct {
+// 		args []string
+// 	}{
+// 		{strings.Split("1 + 2 * 4 0", " ")},
+// 		{strings.Split("1 + 2 0 * 0", " ")},
+// 		{strings.Split("9 - 0 8 * 1", " ")},
+// 		{strings.Split("9 - 0 7 * 5", " ")},
+// 		{strings.Split("9 + 1 / 0 2", " ")},
+// 		{strings.Split("+ 6 / 0 0 2", " ")},
+// 	}
+// 	for i, tt := range tests {
+// 		numbers, operators, _ := InitGameStructure(tt.args)
+// 		got, _, _ := CalculatePrecedenceFirst(numbers, operators)
+// 		if got != expected[i] {
+// 			t.Errorf("test %d: expected %v but got %v", i, expected[i], got)
+// 		}
+// 	}
+// }
+
+func TestCheckNumberOfOperations(t *testing.T) {
+	expected := []int{0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2}
 	var tests = []struct {
 		args []string
 	}{
-		{strings.Split("1 + 2 * 4 0", " ")},
-		{strings.Split("1 + 2 0 * 0", " ")},
-		{strings.Split("9 - 0 8 * 1", " ")},
-		{strings.Split("9 - 0 7 * 5", " ")},
-		{strings.Split("9 + 1 / 0 2", " ")},
-		{strings.Split("+ 6 / 0 0 2", " ")},
+		{strings.Split("1 1 5 5 2 4", " ")},
+		{strings.Split("0 1 + 5 2 4", " ")},
+		{strings.Split("+ 0 0 0 0 0", " ")},
+		{strings.Split("- 0 0 0 0 1", " ")},
+		{strings.Split("0 0 1 0 - 1", " ")},
+		{strings.Split("1 + - 1 0 0", " ")},
+		{strings.Split("1 - + 1 0 0", " ")},
+		{strings.Split("- + 1 0 0 0", " ")},
+		{strings.Split("+ - 1 0 0 0", " ")},
+		{strings.Split("- 1 0 + 1 0", " ")},
+		{strings.Split("- 1 0 + - 5", " ")},
+		{strings.Split("- 1 + - 5 5", " ")},
+		{strings.Split("- 1 * - 5 5", " ")},
+		{strings.Split("- 1 / - 5 5", " ")},
+		{strings.Split("1 0 0 * 0 5", " ")},
+		{strings.Split("1 0 0 0 / 5", " ")},
+		{strings.Split("- 1 0 0 / 5", " ")},
+		{strings.Split("- 1 0 / - 5", " ")},
+		{strings.Split("- 1 + 1 + 5", " ")},
+		{strings.Split("+ 1 + 1 + 5", " ")},
+		{strings.Split("1 + 1 + 4 5", " ")},
+		{strings.Split("1 + - 1 + 1", " ")},
+		{strings.Split("1 * - 1 - 1", " ")},
+	}
+	for i, tt := range tests {
+		_, operators, _ := InitGameStructure(tt.args)
+		got := CheckNumberOfOperations(operators)
+		if got != expected[i] {
+			t.Errorf("test %d: expected %v but got %v", i, expected[i], got)
+		}
+	}
+}
+func TestGetValue(t *testing.T) {
+	expected := []int{115524, 15524, 0, 1}
+	var tests = []struct {
+		args []string
+	}{
+		{strings.Split("1 1 5 5 2 4", " ")},
+		{strings.Split("0 1 5 5 2 4", " ")},
+		{strings.Split("0 0 0 0 0 0", " ")},
+		{strings.Split("0 0 0 0 0 1", " ")},
 	}
 	for i, tt := range tests {
 		numbers, operators, _ := InitGameStructure(tt.args)
-		got, _, _ := CalculatePrecedenceFirst(numbers, operators)
+		got := GetInitialValue(numbers, operators)
 		if got != expected[i] {
 			t.Errorf("test %d: expected %v but got %v", i, expected[i], got)
 		}
 	}
 }
 
-func TestCalculate_passing_non_precedence_arg_expect_full_equation_result(t *testing.T) {
-	expected := []int{42}
+func TestCalculateSingle_passing_single_operations_expect_correct_results(t *testing.T) {
+	expected := []int{5525, 1555, 1555, 40, 2000, 0, -25, 5, 0, 25, 50, -1, -2, -20, 2, -5, -15, 95, 5, -1, 5, -15, -15, -10, -10}
 	var tests = []struct {
 		args []string
 	}{
+		{strings.Split("1 + 5 5 2 4", " ")},
+		{strings.Split("1 5 5 5 + 0", " ")},
+		{strings.Split("1 5 5 5 - 0", " ")},
+		{strings.Split("1 0 * 0 0 4", " ")},
+		{strings.Split("1 0 * 2 0 0", " ")},
+		{strings.Split("1 0 * 0 0 0", " ")},
+		{strings.Split("- 5 * 0 0 5", " ")},
+		{strings.Split("2 5 / 0 0 5", " ")},
+		{strings.Split("0 1 / 1 0 0", " ")},
+		{strings.Split("- 5 * - 0 5", " ")},
+		{strings.Split("- 1 0 * - 5", " ")},
+		{strings.Split("- 0 0 1 * 1", " ")},
+		{strings.Split("- 0 1 0 / 5", " ")},
+		{strings.Split("1 0 0 / - 5", " ")},
+		{strings.Split("- 1 0 / - 5", " ")},
+		{strings.Split("- 1 0 + 0 5", " ")},
+		{strings.Split("- 1 0 + - 5", " ")},
+		{strings.Split("1 0 0 + - 5", " ")},
+		{strings.Split("+ 0 0 + 0 5", " ")},
+		{strings.Split("+ - 6 + 0 5", " ")},
+		{strings.Split("+ 1 0 + - 5", " ")},
+		{strings.Split("+ - 1 0 - 5", " ")},
+		{strings.Split("- + 1 0 - 5", " ")},
+		{strings.Split("- + 5 + - 5", " ")},
+		{strings.Split("+ - 5 + - 5", " ")},
+	}
+	for i, tt := range tests {
+		numbers, operators, _ := InitGameStructure(tt.args)
+		got, _ := CalculateSingle(numbers, operators)
+		if got != expected[i] {
+			t.Errorf("test %d: expected %v but got %v", i, expected[i], got)
+		}
+	}
+}
+
+func TestCalculateSingle_DivisionByZero_expect_error(t *testing.T) {
+	var tests = []struct {
+		args []string
+	}{
+		{strings.Split("1 / 0 0 0 0", " ")},
+		{strings.Split("1 0 / 0 0 0", " ")},
+		{strings.Split("1 0 0 / 0 0", " ")},
+		{strings.Split("1 0 0 0 / 0", " ")},
+		{strings.Split("0 0 / 0 0 0", " ")},
+		{strings.Split("- 1 / 0 0 0", " ")},
+		{strings.Split("- 1 0 / 0 0", " ")},
+		{strings.Split("- 1 0 0 / 0", " ")},
+		{strings.Split("- 1 0 / - 0", " ")},
+		{strings.Split("1 0 0 / - 0", " ")},
+		{strings.Split("1 / - 0 0 0", " ")},
+	}
+	for i, tt := range tests {
+		numbers, operators, _ := InitGameStructure(tt.args)
+		_, err := CalculateSingle(numbers, operators)
+		if err == nil {
+			t.Errorf("test %d: expected error. didnt get one", i)
+		}
+	}
+}
+
+func TestIsPrecedence(t *testing.T) {
+	expected := []bool{true, false, false, true, true, false, false, false, true}
+	var tests = []struct {
+		args []string
+	}{
+		{strings.Split("1 1 + 5 * 4", " ")},
+		{strings.Split("1 + 2 + - 3", " ")},
+		{strings.Split("- 1 + 5 - 2", " ")},
+		{strings.Split("- 1 + 5 / 2", " ")},
+		{strings.Split("1 + 1 * 1 2", " ")},
 		{strings.Split("1 + 1 + 4 0", " ")},
+		{strings.Split("2 / 1 + 4 0", " ")},
+		{strings.Split("2 / - 1 + 2", " ")},
+		{strings.Split("2 + 2 / - 2", " ")},
 	}
 	for i, tt := range tests {
-		numbers, operators, _ := InitGameStructure(tt.args)
-		got, _ := Calculate(numbers, operators)
+		_, operators, _ := InitGameStructure(tt.args)
+		got := IsPrecedence(operators)
+		if got != expected[i] {
+			t.Errorf("test %d: expected %v but got %v", i, expected[i], got)
+		}
+	}
+}
+func TestGetPrecedenceIndex(t *testing.T) {
+	expected := []int{4, 3, 3, 3, 4}
+	var tests = []struct {
+		args []string
+	}{
+		{strings.Split("1 1 + 5 * 4", " ")},
+		{strings.Split("1 1 2 / 2 4", " ")},
+		{strings.Split("+ 1 2 / - 3", " ")},
+		{strings.Split("1 + 2 * - 3", " ")},
+		{strings.Split("- 2 - 1 / 3", " ")},
+	}
+	for i, tt := range tests {
+		_, operators, _ := InitGameStructure(tt.args)
+		got := GetPrecedenceIndex(operators)
 		if got != expected[i] {
 			t.Errorf("test %d: expected %v but got %v", i, expected[i], got)
 		}
 	}
 }
 
-func TestCalculate3(t *testing.T) {
-	expected := []int{6}
+func TestCalculateTwice(t *testing.T) {
+	// expected := []int{30, 0, 7, -2}
+	expected := []int{0, -3, 4, 17, 0, 0, -6, -5, 10, -8, 2, 11, 1, 1, -3, 20, 40, -9, -9, 0}
 	var tests = []struct {
 		args []string
 	}{
-		{strings.Split("2 * 3 + 4 0", " ")},
+		{strings.Split("- 1 + 1 + 0", " ")},
+		{strings.Split("- 1 * 2 - 1", " ")},
+		{strings.Split("- 1 + 2 + 3", " ")},
+		{strings.Split("1 0 + 5 + 2", " ")},
+		{strings.Split("+ 6 / 2 - 3", " ")},
+		{strings.Split("1 + 2 + - 3", " ")},
+		{strings.Split("- 2 - 1 - 3", " ")},
+		{strings.Split("- 2 * 1 - 3", " ")},
+		{strings.Split("6 / 3 + 0 8", " ")},
+		{strings.Split("- 2 * 1 * 4", " ")},
+		{strings.Split("0 + 1 + 0 1", " ")},
+		{strings.Split("1 0 + 0 + 1", " ")},
+		{strings.Split("+ 1 + 0 + 0", " ")},
+		{strings.Split("+ 0 + 0 + 1", " ")},
+		{strings.Split("- 1 - 1 - 1", " ")},
+		{strings.Split("1 * 2 0 - 0", " ")},
+		{strings.Split("1 * 2 0 * 2", " ")},
+		{strings.Split("- 6 / 2 * 3", " ")},
+		{strings.Split("- 6 * 3 / 2", " ")},
+		{strings.Split("+ 6 / 2 - 3", " ")},
 	}
 	for i, tt := range tests {
 		numbers, operators, _ := InitGameStructure(tt.args)
-		got, _ := Calculate3(numbers, operators)
+		got, _ := CalculateTwice(numbers, operators)
 		if got != expected[i] {
 			t.Errorf("test %d: expected %v but got %v", i, expected[i], got)
 		}
 	}
 }
+
+// func TestCalculateTwice_passing_sum_and_sub_equations_expect_results(t *testing.T) {
+// 	// (1 + 1) + 40 = 2 + 40 = 42
+// 	expected := []int{-151, -50}
+// 	var tests = []struct {
+// 		args []string
+// 	}{
+// 		{strings.Split("- 1 5 5 + 4", " ")},
+// 		{strings.Split("1 - 5 5 + 4", " ")},
+// 	}
+// 	for i, tt := range tests {
+// 		numbers, operators, _ := InitGameStructure(tt.args)
+// 		got := CalculateTwice(numbers, operators)
+// 		if got != expected[i] {
+// 			t.Errorf("test %d: expected %v but got %v", i, expected[i], got)
+// 		}
+// 	}
+// }
+
+// func TestCalculateTwice_passing_sum_and_sub_equations_expect_results(t *testing.T) {
+// 	// (1 + 1) + 40 = 2 + 40 = 42
+// 	expected := []int{42, 62, 162, 0, -50, -151, -50}
+// 	var tests = []struct {
+// 		args []string
+// 	}{
+// 		// {strings.Split("1 + 1 + 4 0", " ")},
+// 		// {strings.Split("+ 1 0 + 5 2", " ")},
+// 		// {strings.Split("1 0 + 1 5 2", " ")},
+// 		// {strings.Split("1 0 - 5 - 5", " ")},
+// 		{strings.Split("- 1 5 5 + 4", " ")},
+// 		{strings.Split("1 - 5 5 + 4", " ")},
+// 	}
+// 	for i, tt := range tests {
+// 		numbers, operators, _ := InitGameStructure(tt.args)
+// 		got := CalculateTwice(numbers, operators)
+// 		if got != expected[i] {
+// 			t.Errorf("test %d: expected %v but got %v", i, expected[i], got)
+// 		}
+// 	}
+// }
+
+// func TestCalculate3(t *testing.T) {
+// 	expected := []int{6}
+// 	var tests = []struct {
+// 		args []string
+// 	}{
+// 		{strings.Split("2 * 3 + 4 0", " ")},
+// 	}
+// 	for i, tt := range tests {
+// 		numbers, operators, _ := InitGameStructure(tt.args)
+// 		got, _ := Calculate3(numbers, operators)
+// 		if got != expected[i] {
+// 			t.Errorf("test %d: expected %v but got %v", i, expected[i], got)
+// 		}
+// 	}
+// }

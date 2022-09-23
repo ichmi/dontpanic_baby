@@ -5,6 +5,8 @@ import (
 	"strconv"
 )
 
+const SENT = 2147483647
+
 func IsOperator(s string) bool {
 	if s == "+" || s == "-" || s == "*" || s == "/" {
 		return true
@@ -161,32 +163,32 @@ func DividedByZero(n int, op int) error {
 	return nil
 }
 
-func CalculateOnce(numbers []int, operators []int) (int, error) {
-	var index int
-	if CheckForOperatorPrecedence(operators) {
-		index = GetIndex(operators, true)
-	} else {
-		index = GetIndex(operators, false)
-	}
-	before := GetValuesBefore(numbers, operators)
-	after := GetValuesAfter(numbers, operators)
-	if index != -1 {
-		if err := DividedByZero(after, operators[index]); err != nil {
-			return 0, err
-		}
-		switch operators[index] {
-		case '+':
-			return before + after, nil
-		case '-':
-			return before - after, nil
-		case '*':
-			return before * after, nil
-		case '/':
-			return before / after, nil
-		}
-	}
-	return before, nil
-}
+// func CalculateOnce(numbers []int, operators []int) (int, error) {
+// 	var index int
+// 	if CheckForOperatorPrecedence(operators) {
+// 		index = GetIndex(operators, true)
+// 	} else {
+// 		index = GetIndex(operators, false)
+// 	}
+// 	before := GetValuesBefore(numbers, operators)
+// 	after := GetValuesAfter(numbers, operators)
+// 	if index != SENT {
+// 		if err := DividedByZero(after, operators[index]); err != nil {
+// 			return 0, err
+// 		}
+// 		switch operators[index] {
+// 		case '+':
+// 			return before + after, nil
+// 		case '-':
+// 			return before - after, nil
+// 		case '*':
+// 			return before * after, nil
+// 		case '/':
+// 			return before / after, nil
+// 		}
+// 	}
+// 	return before, nil
+// }
 
 func CheckNumberOfCalculationsAndPrecedence(numbers []int, operators []int) (bool, int) {
 	count := 0
@@ -231,108 +233,150 @@ func GetHints(try string, solution string) string {
 	}
 	return string(hints[:])
 }
-func _CalculateTwice(result *int, numbers []int, operators []int) {
-	x := GetValue(numbers)
-	i := 0
-	for operators[i] == -1 {
-		i++
+
+// func _CalculateTwice(result *int, numbers []int, operators []int) {
+// 	sign := 1
+// 	i := 0
+// 	if operators[i] == '+' {
+// 		i++
+// 	} else if operators[i] == '-' {
+// 		sign = -1
+// 	}
+// 	x := GetValue(numbers[i:])
+// 	for operators[i] == -1 {
+// 		i++
+// 	}
+// 	y := GetValue(numbers[i+1:])
+
+// 	*result = 0
+// 	switch operators[i] {
+// 	case '+':
+// 		*result = (x + y) * sign
+// 	case '-':
+// 		*result = (x - y) * sign
+// 	}
+// 	fmt.Println(*result) // -54
+
+// 	fmt.Println(i)            // 1
+// 	fmt.Println(numbers[i])   // -1
+// 	fmt.Println(operators[i]) // 45
+// 	if numbers[i] != -1 {
+// 		for operators[i] == -1 {
+// 			i++
+// 		}
+// 		i++
+// 	}
+
+// 	y = GetValue(numbers[i+2:])
+// 	switch operators[i+1] {
+// 	case '+':
+// 		*result += y
+// 	case '-':
+// 		*result -= y
+// 	}
+// 	fmt.Println(*result)
+// }
+
+func GetSign(operators []int) int {
+	if operators[0] == '-' {
+		return -1
 	}
-	y := GetValue(numbers[i+1:])
-	*result = 0
-	switch operators[i] {
-	case '+':
-		*result = x + y
-	case '-':
-		*result = x - y
-	}
-	for operators[i] == -1 {
-		i++
-	}
-	i++
-	y = GetValue(numbers[i+2:])
-	switch operators[i+1] {
-	case '+':
-		*result += y
-	case '-':
-		*result -= y
-	}
+	return 1
 }
 
-// (1 + 1) + 40
-// 2 + 40
-// 42
-func Calculate(numbers []int, operators []int) (int, error) {
-	result := 0
-	_CalculateTwice(&result, numbers, operators)
-	return result, nil
-}
+// func _SumSubFirst(op, i, x, y, sign int) int {
+// 	switch op {
+// 	case '+':
+// 		x += y
+// 	case '-':
+// 		x -= y
+// 	}
+// 	if sign == -1 {
+// 		x = -x
+// 	}
+// 	return x
+// }
+
+// - 1
+// func CalculateTwice(numbers []int, operators []int) int {
+// 	i := 0
+// 	sign := 1
+// 	if sign = GetSign(operators); sign == -1 {
+// 		i++
+// 	}
+// 	x := GetValue(numbers[i:])
+// 	for numbers[i] != -1 {
+// 		i++
+// 	}
+// 	y := GetValue(numbers[i+1:])
+// 	x = _SumSubFirst(operators[i], i, x, y, sign)
+// 	i++
+// 	for numbers[i] != -1 {
+// 		i++
+// 	}
+// 	y = GetValue(numbers[i+1:])
+// 	result := _SumSubFirst(operators[i], i, x, y, 1)
+// 	fmt.Println(result)
+// 	return result
+// }
 
 // 1 + (2 * 40)
 // 1 + 80
 // 81
-func Calculate2(numbers []int, operators []int) (int, error) {
-	y, index, err := CalculatePrecedenceFirst(numbers, operators)
-	if err != nil {
-		return 0, err
-	}
-	x := GetValue(numbers[:index])
-	i := 0
-	for operators[i] == -1 {
-		i++
-	}
-	result := 0
-	switch operators[i] {
-	case '+':
-		result = x + y
-	case '-':
-		result = x - y
-	}
-	return result, nil
-}
+// func Calculate2(numbers []int, operators []int) (int, error) {
+// 	y, index, err := CalculatePrecedenceFirst(numbers, operators)
+// 	if err != nil {
+// 		return 0, err
+// 	}
+// 	x := GetValue(numbers[:index])
+// 	i := 0
+// 	for operators[i] == -1 {
+// 		i++
+// 	}
+// 	result := 0
+// 	switch operators[i] {
+// 	case '+':
+// 		result = x + y
+// 	case '-':
+// 		result = x - y
+// 	}
+// 	return result, nil
+// }
 
-func Calculate3(numbers []int, operators []int) (int, error) {
-	x := GetValue(numbers)
-	i := 0
-	for operators[i] == -1 {
-		i++
-	}
-	y := GetValue(numbers[i+1:])
+// func Calculate3(numbers []int, operators []int) (int, error) {
+// 	x := GetValue(numbers, operators)
+// 	i := 0
+// 	for operators[i] == -1 {
+// 		i++
+// 	}
+// 	y := GetValue(numbers[i+1:])
 
-	result := 0
-	switch operators[i] {
-	case '*':
-		result = x * y
-	case '/':
-		if y == 0 {
-			return 0, errors.New("cant divide by zero")
-		}
-		result = x / y
-	}
-	return result, nil
-}
+// 	result := 0
+// 	switch operators[i] {
+// 	case '*':
+// 		result = x * y
+// 	case '/':
+// 		if y == 0 {
+// 			return 0, errors.New("cant divide by zero")
+// 		}
+// 		result = x / y
+// 	}
+// 	return result, nil
+// }
 
-func CalculatePrecedenceFirst(numbers []int, operators []int) (int, int, error) {
-	var index int
-	if CheckForOperatorPrecedence(operators) {
-		index = GetIndex(operators, true)
-	} else {
-		index = GetIndex(operators, false)
-	}
-	n := GetSliceOfNumbers(SiToSs(numbers[index-1:]))
-	o := GetSliceOfNumbers(SiToSs(operators[index-1:]))
-	v, err := CalculateOnce(n, o)
-	return v, index, err
+// func CalculatePrecedenceFirst(numbers []int, operators []int) (int, int, error) {
+// 	var index int
+// 	if CheckForOperatorPrecedence(operators) {
+// 		index = GetIndex(operators, true)
+// 	} else {
+// 		index = GetIndex(operators, false)
+// 	}
+// 	n := GetSliceOfNumbers(SiToSs(numbers[index-1:]))
+// 	o := GetSliceOfNumbers(SiToSs(operators[index-1:]))
+// 	v, err := CalculateOnce(n, o)
+// 	return v, index, err
 
-}
-
-func GetValue(numbers []int) int {
-	buff := ""
-	for i := 0; i < len(numbers) && numbers[i] != -1; i++ {
-		buff += strconv.Itoa(numbers[i])
-	}
-	v, _ := strconv.Atoi(buff)
-	return v
-}
+// }
 
 func SiToSs(numbers []int) []string {
 	size := 0
