@@ -1,4 +1,4 @@
-package main
+package game_application
 
 import (
 	"errors"
@@ -38,11 +38,15 @@ func CheckNumberOfOperations(operators []int) int {
 	}
 	return n
 }
-func GetInitialValue(numbers []int, operators []int) int {
+
+func GetValue(numbers []int, operators []int) int {
 	buff := ""
 	sign := 1
 	i := 0
 	if operators[0] == '-' && operators[1] == '+' {
+		sign = -1
+		i = 2
+	} else if operators[0] == '+' && operators[1] == '-' {
 		sign = -1
 		i = 2
 	} else if operators[0] == '-' {
@@ -58,15 +62,6 @@ func GetInitialValue(numbers []int, operators []int) int {
 	return v * sign
 }
 
-func GetValue(numbers []int) int {
-	buff := ""
-	for i := 0; i < len(numbers) && numbers[i] != -1; i++ {
-		buff += strconv.Itoa(numbers[i])
-	}
-	v, _ := strconv.Atoi(buff)
-	return v
-}
-
 func CalculateSingle(numbers []int, operators []int) (int, error) {
 	i := 0
 	if operators[0] == '+' {
@@ -76,7 +71,7 @@ func CalculateSingle(numbers []int, operators []int) (int, error) {
 	if numbers[i] > 9 {
 		x = numbers[i]
 	} else {
-		x = GetInitialValue(numbers[i:], operators[i:])
+		x = GetValue(numbers[i:], operators[i:])
 	}
 	if x < 0 {
 		i++
@@ -89,7 +84,7 @@ func CalculateSingle(numbers []int, operators []int) (int, error) {
 	}
 	var y int
 	if i < len(numbers) {
-		y = GetInitialValue(numbers[i+1:], operators[i+1:])
+		y = GetValue(numbers[i+1:], operators[i+1:])
 	} else {
 		return x, nil
 	}
@@ -107,23 +102,6 @@ func CalculateSingle(numbers []int, operators []int) (int, error) {
 		return x / y, nil
 	}
 	return x, nil
-}
-
-func Calculate(numbers []int, operators []int) (int, error) {
-	n := CheckNumberOfOperations(operators)
-	result := 0
-	switch n {
-	case 0:
-		result = GetValue(numbers)
-	case 1:
-		result, _ = CalculateSingle(numbers, operators)
-	case 2:
-		// if IsPrecedence(operators) {
-		// 	i := GetPrecedenceIndex(operators)
-		// }
-		result, _ = CalculateTwice(numbers, operators)
-	}
-	return result, nil
 }
 
 func IsPrecedence(operators []int) bool {
@@ -183,7 +161,7 @@ func CalculateTwice(numbers []int, operators []int) (int, error) {
 	if operators[0] == '+' {
 		i++
 	}
-	x := GetInitialValue(numbers[i:], operators[i:])
+	x := GetValue(numbers[i:], operators[i:])
 	if x < 0 {
 		i++
 	}
@@ -193,13 +171,7 @@ func CalculateTwice(numbers []int, operators []int) (int, error) {
 	for i < len(numbers) && numbers[i] != -1 {
 		i++
 	}
-
-	var y int
-	if i < len(numbers) {
-		y = GetInitialValue(numbers[i+1:], operators[i+1:])
-	} else {
-		return x, nil
-	}
+	y := GetValue(numbers[i+1:], operators[i+1:])
 	if y > 9 {
 		switch operators[i] {
 		case '+':
@@ -232,6 +204,46 @@ func CalculateTwice(numbers []int, operators []int) (int, error) {
 	for i < len(numbers) && numbers[i+1] != -1 {
 		i++
 	}
-	v, _ := CalculateSingle(numbers[i:], operators[i:])
-	return v, nil
+	v, err := CalculateSingle(numbers[i:], operators[i:])
+	return v, err
+}
+
+func Calculate(numbers []int, operators []int) (int, error) {
+	n := CheckNumberOfOperations(operators)
+	result := 0
+	switch n {
+	case 0:
+		result = GetValue(numbers, operators)
+	case 1:
+		result, _ = CalculateSingle(numbers, operators)
+	case 2:
+		if IsPrecedence(operators) {
+			var newNumbers []int
+			i := GetPrecedenceIndex(operators)
+			if numbers[i-2] != -1 {
+				numbers[i-1] = GetValue(numbers[i-2:], operators)
+			}
+			y, err := CalculateSingle(numbers[i-1:], operators[i-1:])
+			if err != nil {
+				return 0, err
+			}
+			if numbers[i-2] != -1 {
+				newNumbers = append(numbers[:i-2], y)
+			} else {
+				newNumbers = append(numbers[:i-1], y)
+			}
+			newOperators := append(operators[:i-1], -1)
+			result, err = CalculateSingle(newNumbers, newOperators)
+			if err != nil {
+				return 0, err
+			}
+		} else {
+			var err error
+			result, err = CalculateTwice(numbers, operators)
+			if err != nil {
+				return 0, err
+			}
+		}
+	}
+	return result, nil
 }
