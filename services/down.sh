@@ -1,4 +1,5 @@
 #!/bin/bash
-docker stop db
-docker rm db
-docker rmi db:latest
+
+docker stop db front back
+docker rm db front back
+docker rmi db:latest front:latest back:latest

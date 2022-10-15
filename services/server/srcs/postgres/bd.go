@@ -11,11 +11,11 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-const USERNAME = "postgres"
-const PASSWORD = "mich"
+const USERNAME = "bexsy"
+const PASSWORD = "frosa-ma"
 const PORT = "5432"
-const URI = "localhost"
-const DB = "test"
+const URI = "172.17.0.4"
+const DB = "daily"
 
 // urlExample := "postgres://username:password@localhost:5432/database_name"
 var DATABASE_URL string = fmt.Sprintf("postgres://%s:%s@%s:%s/%s", USERNAME, PASSWORD, URI, PORT, DB)
@@ -50,11 +50,11 @@ func GetDaySolution(db *pgx.Conn) string {
 	type Row struct {
 		id       int
 		solution string
-		datetime time.Time
+		dt       time.Time
 	}
 	r := Row{}
-	_ = db.QueryRow(context.Background(), "SELECT * FROM day_solution WHERE ID=1").Scan(&r.id, &r.solution, &r.datetime)
-	if r.datetime.Day()+1 != time.Now().Day() {
+	_ = db.QueryRow(context.Background(), "SELECT * FROM day_solution WHERE ID=1").Scan(&r.id, &r.solution, &r.dt)
+	if r.dt.Day()+1 != time.Now().Day() {
 		r.solution = GetNewDaySolution(db)
 		UpdateDaySolutionTable(db, r.solution)
 	}
