@@ -12,9 +12,9 @@ import (
 )
 
 const USERNAME = "bexsy"
-const PASSWORD = "frosa-ma"
+const PASSWORD = "mich"
+const URI = "db"
 const PORT = "5432"
-const URI = "172.17.0.4"
 const DB = "daily"
 
 // urlExample := "postgres://username:password@localhost:5432/database_name"
@@ -54,7 +54,7 @@ func GetDaySolution(db *pgx.Conn) string {
 	}
 	r := Row{}
 	_ = db.QueryRow(context.Background(), "SELECT * FROM day_solution WHERE ID=1").Scan(&r.id, &r.solution, &r.dt)
-	if r.dt.Day()+1 != time.Now().Day() {
+	if r.dt.Day() != time.Now().Day() {
 		r.solution = GetNewDaySolution(db)
 		UpdateDaySolutionTable(db, r.solution)
 	}
@@ -87,7 +87,7 @@ func GetNewDaySolution(db *pgx.Conn) string {
 
 // It updates the dayresult table with the solution of the day
 func UpdateDaySolutionTable(db *pgx.Conn, daySolution string) {
-	sqlStatement := fmt.Sprintf(`UPDATE day_solution SET solution='%s', datetime=NOW() WHERE id=1`, daySolution)
+	sqlStatement := fmt.Sprintf(`UPDATE day_solution SET solution='%s', dt=NOW() WHERE id=1`, daySolution)
 	_, err := db.Exec(context.Background(), sqlStatement)
 	if err != nil {
 		fmt.Printf("[-] Table update failed due `%s`\n", err)

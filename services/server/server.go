@@ -7,8 +7,12 @@ import (
 )
 
 func main() {
-	router := gin.Default()
-	router.Use(cors.Default())
-	router.POST("/", game_application.Game)
-	router.Run("0.0.0.0:8081")
+	r := gin.Default()
+	// r.Use(cors.Default())
+	config := cors.DefaultConfig()
+	config.AllowAllOrigins = true
+	r.Use(cors.New(config))
+
+	r.POST("/post", game_application.Game)
+	r.Run(":8081")
 }
