@@ -58,7 +58,7 @@ async function fecth_expression(req) {
 		},
 		body: JSON.stringify(update),
 	};
-	let response = await fetch('http://localhost/post', options)
+	let response = await fetch(`http://labs-bexs-u8968B-Y.42sp.org.br:5011`, options)
 	.then(encoded => encoded.json())
 	.then(response => response)
 	return(response)
