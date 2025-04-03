@@ -1,4 +1,4 @@
-package game_application
+package game
 
 import (
 	"errors"

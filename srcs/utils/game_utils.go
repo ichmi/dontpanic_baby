@@ -1,8 +1,9 @@
-package game_application
+package utils
 
 import (
 	"errors"
 	"strconv"
+	"unicode"
 )
 
 func InsertDelimeter(s string) string {
@@ -60,6 +61,14 @@ func InitGameStructure(ss []string) ([]int, []int, error) {
 		}
 	}
 	return GetSliceOfNumbers(ss), GetSliceOfOperators(ss), nil
+}
+
+func IsValidArg(ch int) bool {
+	return (ch == '+' || ch == '-' || ch == '*' || ch == '/') || IsDigit(ch)
+}
+
+func IsDigit(ch int) bool {
+	return unicode.IsDigit(rune(ch))
 }
 
 func IsAvaiableInSolution(b rune, solution string) bool {

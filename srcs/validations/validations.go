@@ -1,9 +1,10 @@
-package game_application
+package validations
 
 import (
 	"errors"
 	"fmt"
-	"unicode"
+
+	"github.com/ichmi/dpbaby/srcs/utils"
 )
 
 func ValidateNumArgs(av []string) error {
@@ -18,13 +19,6 @@ func CheckArgLen(s string) error {
 		return errors.New("argument have more than two digits")
 	}
 	return nil
-}
-
-func IsDigit(ch int) bool {
-	return unicode.IsDigit(rune(ch))
-}
-func IsValidArg(ch int) bool {
-	return (ch == '+' || ch == '-' || ch == '*' || ch == '/') || IsDigit(ch)
 }
 
 func CheckFirstSpot(ss []string) error {
@@ -87,7 +81,7 @@ func CheckOperators(av []string) error {
 	temp := av[0][0]
 	i := 1
 	for i < len(av) {
-		if IsOperator(av[i]) {
+		if utils.IsOperator(av[i]) {
 			if av[i][0] == temp {
 				return fmt.Errorf("%c cant be followed by %c", temp, av[i][0])
 			}
@@ -110,7 +104,7 @@ func ValidateArguments(av []string) error {
 			return err
 		}
 		for _, ch := range s {
-			if !IsValidArg(int(ch)) {
+			if !utils.IsValidArg(int(ch)) {
 				return fmt.Errorf("argument `%c` is invalid", ch)
 			}
 		}

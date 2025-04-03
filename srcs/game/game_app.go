@@ -1,10 +1,12 @@
-package game_application
+package game
 
 import (
 	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/ichmi/dpbaby/srcs/utils"
+	"github.com/ichmi/dpbaby/srcs/validations"
 )
 
 const SOLUTION string = "2+2*20"
@@ -28,8 +30,8 @@ func ResponseGame(c *gin.Context) {
 	s = strings.Trim(s, ",")
 	ss := strings.Split(s, ",")
 
-	if err := ValidateArguments(ss); err == nil {
-		numbers, operators, err := InitGameStructure(ss)
+	if err := validations.ValidateArguments(ss); err == nil {
+		numbers, operators, err := utils.InitGameStructure(ss)
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{"error": "INVALID INPUT"})
 			return
@@ -39,7 +41,7 @@ func ResponseGame(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{"error": "CAN'T DIVIDE BY ZERO"})
 		} else if r == 42 {
 			try := strings.Join(ss, "")
-			s := GetHints(try, SOLUTION)
+			s := utils.GetHints(try, SOLUTION)
 			if s == "CCCCCC" {
 				c.JSON(http.StatusOK, gin.H{"content": s})
 			} else {

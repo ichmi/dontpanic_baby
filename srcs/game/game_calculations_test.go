@@ -1,10 +1,10 @@
-package main
+package game
 
 import (
 	"strings"
 	"testing"
 
-	"localhost.com/game_application"
+	"github.com/ichmi/dpbaby/srcs/utils"
 )
 
 func TestCheckNumberOfOperations_expect_given_number_of_operations_for_each_test(t *testing.T) {
@@ -37,8 +37,8 @@ func TestCheckNumberOfOperations_expect_given_number_of_operations_for_each_test
 		{strings.Split("1 * - 1 - 1", " ")},
 	}
 	for i, tt := range tests {
-		_, operators, _ := game_application.InitGameStructure(tt.args)
-		got := game_application.CheckNumberOfOperations(operators)
+		_, operators, _ := utils.InitGameStructure(tt.args)
+		got := CheckNumberOfOperations(operators)
 		if got != expected[i] {
 			t.Errorf("test %d: expected %v but got %v", i, expected[i], got)
 		}
@@ -80,8 +80,8 @@ func TestGetValue_passing_equation_expect_int_representation_of_that_number(t *t
 		{strings.Split("+ - 0 1 / 0", " ")},
 	}
 	for i, tt := range tests {
-		numbers, operators, _ := game_application.InitGameStructure(tt.args)
-		got := game_application.GetValue(numbers, operators)
+		numbers, operators, _ := utils.InitGameStructure(tt.args)
+		got := GetValue(numbers, operators)
 		if got != expected[i] {
 			t.Errorf("test %d: expected %v but got %v", i, expected[i], got)
 		}
@@ -120,8 +120,8 @@ func TestCalculateSingle_passing_single_operations_expect_correct_results(t *tes
 		{strings.Split("+ - 5 + - 5", " ")},
 	}
 	for i, tt := range tests {
-		numbers, operators, _ := game_application.InitGameStructure(tt.args)
-		got, _ := game_application.CalculateSingle(numbers, operators)
+		numbers, operators, _ := utils.InitGameStructure(tt.args)
+		got, _ := CalculateSingle(numbers, operators)
 		if got != expected[i] {
 			t.Errorf("test %d: expected %v but got %v", i, expected[i], got)
 		}
@@ -147,8 +147,8 @@ func TestCalculateSingle_DivisionByZero_expect_error(t *testing.T) {
 		{strings.Split("+ - 1 / 0 0", " ")},
 	}
 	for i, tt := range tests {
-		numbers, operators, _ := game_application.InitGameStructure(tt.args)
-		_, err := game_application.CalculateSingle(numbers, operators)
+		numbers, operators, _ := utils.InitGameStructure(tt.args)
+		_, err := CalculateSingle(numbers, operators)
 		if err == nil {
 			t.Errorf("test %d: expected error. didnt get one", i)
 		}
@@ -171,8 +171,8 @@ func TestIsPrecedence_passing_equation_with_and_without_precedence_expect_true_o
 		{strings.Split("2 + 2 / - 2", " ")},
 	}
 	for i, tt := range tests {
-		_, operators, _ := game_application.InitGameStructure(tt.args)
-		got := game_application.IsPrecedence(operators)
+		_, operators, _ := utils.InitGameStructure(tt.args)
+		got := IsPrecedence(operators)
 		if got != expected[i] {
 			t.Errorf("test %d: expected %v but got %v", i, expected[i], got)
 		}
@@ -190,8 +190,8 @@ func TestGetPrecedenceIndex_passing_precedence_operator_expect_its_index(t *test
 		{strings.Split("- 2 - 1 / 3", " ")},
 	}
 	for i, tt := range tests {
-		_, operators, _ := game_application.InitGameStructure(tt.args)
-		got := game_application.GetPrecedenceIndex(operators)
+		_, operators, _ := utils.InitGameStructure(tt.args)
+		got := GetPrecedenceIndex(operators)
 		if got != expected[i] {
 			t.Errorf("test %d: expected %v but got %v", i, expected[i], got)
 		}
@@ -225,8 +225,8 @@ func TestCalculate_passing_valid_equations_expect_its_results(t *testing.T) {
 		{strings.Split("+ 6 / 2 - 3", " ")},
 	}
 	for i, tt := range tests {
-		numbers, operators, _ := game_application.InitGameStructure(tt.args)
-		got, _ := game_application.Calculate(numbers, operators)
+		numbers, operators, _ := utils.InitGameStructure(tt.args)
+		got, _ := Calculate(numbers, operators)
 		if got != expected[i] {
 			t.Errorf("test %d: expected %v but got %v", i, expected[i], got)
 		}
@@ -249,8 +249,8 @@ func TestCalculate_with_precedence_passing_valid_equations_expect_its_results(t 
 		{strings.Split("2 + 2 * 2 0", " ")},
 	}
 	for i, tt := range tests {
-		numbers, operators, _ := game_application.InitGameStructure(tt.args)
-		got, _ := game_application.Calculate(numbers, operators)
+		numbers, operators, _ := utils.InitGameStructure(tt.args)
+		got, _ := Calculate(numbers, operators)
 		if got != expected[i] {
 			t.Errorf("test %d: expected %v but got %v", i, expected[i], got)
 		}
@@ -273,8 +273,8 @@ func TestCalculate_with_precedence_passing_invalid_equations_expect_DivisionByZe
 		{strings.Split("2 / 2 / 0 0", " ")},
 	}
 	for i, tt := range tests {
-		numbers, operators, _ := game_application.InitGameStructure(tt.args)
-		_, err := game_application.Calculate(numbers, operators)
+		numbers, operators, _ := utils.InitGameStructure(tt.args)
+		_, err := Calculate(numbers, operators)
 		if err == nil {
 			t.Errorf("test %d: expect an error but we didnt get one", i)
 		}

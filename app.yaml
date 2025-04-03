@@ -1,0 +1,14 @@
+runtime: go123
+
+instance_class: F1
+
+automatic_scaling:
+  min_instances: 0
+  max_instances: 5
+
+env_variables:
+  API_URL: "https://evident-lock-455503-a2.rj.r.appspot.com"
+
+handlers:
+  - url: /.*
+    script: auto

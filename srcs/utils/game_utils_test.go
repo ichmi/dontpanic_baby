@@ -1,16 +1,14 @@
-package main
+package utils
 
 import (
 	"strings"
 	"testing"
-
-	"localhost.com/game_application"
 )
 
 func TestIsOperator_passing_valid_operator_expect_true(t *testing.T) {
 	operators := []string{"-", "+", "/", "*"}
 	for i, s := range operators {
-		op := game_application.IsOperator(s)
+		op := IsOperator(s)
 		if op != true {
 			t.Errorf("test %d: expect true but got false", i)
 		}
@@ -20,7 +18,7 @@ func TestIsOperator_passing_valid_operator_expect_true(t *testing.T) {
 func TestIsOperator_passing_invalid_operator_expect_false(t *testing.T) {
 	operators := []string{">", "<", "=", ".", "x", "(", ")", "{", "}", "1", "2", "9", "0"}
 	for i, s := range operators {
-		op := game_application.IsOperator(s)
+		op := IsOperator(s)
 		if op != false {
 			t.Errorf("test %d: expect false but got true", i)
 		}
@@ -43,7 +41,7 @@ func TestGetSliceOfOperators_passing_numbers_only_expect_slice_of_minus_ones(t *
 		{strings.Split("9 8 7 6 5 4", " ")},
 	}
 	for i, tt := range tests {
-		operators := game_application.GetSliceOfOperators(tt.args)
+		operators := GetSliceOfOperators(tt.args)
 		for j, v := range operators {
 			if v != results[i].args[j] {
 				t.Errorf("test %d: expect %d but got %d", i, results[i].args[j], v)
@@ -74,7 +72,7 @@ func TestGetSliceOfOperators_passing_operators_and_numbers_expect_ascii_and_minu
 		{strings.Split("+ 8 - / / 3", " ")},
 	}
 	for i, tt := range tests {
-		operators := game_application.GetSliceOfOperators(tt.args)
+		operators := GetSliceOfOperators(tt.args)
 		for j, v := range operators {
 			if v != results[i].args[j] {
 				t.Errorf("test %d: expect %d but got %d", i, results[i].args[j], v)
@@ -105,7 +103,7 @@ func TestGetSliceOfOperators_passing_operators_only_expect_its_ascii_values(t *t
 		{strings.Split("- * / + * *", " ")},
 	}
 	for i, tt := range tests {
-		operators := game_application.GetSliceOfOperators(tt.args)
+		operators := GetSliceOfOperators(tt.args)
 		for j, v := range operators {
 			if v != results[i].args[j] {
 				t.Errorf("test %d: expect %d but got %d", i, results[i].args[j], v)
@@ -130,7 +128,7 @@ func TestGetSliceOfNumbers_passing_numbers_only_expect_its_integer_representatio
 		{strings.Split("4 2 2 7 4 9", " ")},
 	}
 	for i, tt := range tests {
-		numbers := game_application.GetSliceOfNumbers(tt.args)
+		numbers := GetSliceOfNumbers(tt.args)
 		for j, v := range numbers {
 			if v != results[i].args[j] {
 				t.Errorf("test %d: expect %d but got %d", i, results[i].args[j], v)
@@ -159,7 +157,7 @@ func TestGetSliceOfNumbers_passing_operators_only_expect_minus_ones(t *testing.T
 		{strings.Split("/ * - + / *", " ")},
 	}
 	for i, tt := range tests {
-		numbers := game_application.GetSliceOfNumbers(tt.args)
+		numbers := GetSliceOfNumbers(tt.args)
 		for j, v := range numbers {
 			if v != results[i].args[j] {
 				t.Errorf("test %d: expect %d but got %d", i, results[i].args[j], v)
@@ -183,7 +181,7 @@ func TestGetSliceOfNumbers_passing_numbers_and_operators_expect_integers_represe
 		{strings.Split("0 0 2 * 4 0", " ")},
 	}
 	for i, tt := range tests {
-		numbers := game_application.GetSliceOfNumbers(tt.args)
+		numbers := GetSliceOfNumbers(tt.args)
 		for j, v := range numbers {
 			if v != results[i].args[j] {
 				t.Errorf("test %d: expect %d but got %d", i, results[i].args[j], v)
@@ -204,7 +202,7 @@ func TestInitGameStructure_passing_invalid_args_expect_error(t *testing.T) {
 		{[]string{"1", ".", "8", "/", "0", "4"}},
 	}
 	for i, tt := range tests {
-		_, _, err := game_application.InitGameStructure(tt.args)
+		_, _, err := InitGameStructure(tt.args)
 		if err == nil {
 			t.Errorf("test %d: expect error. we didnt get one", i)
 		}
@@ -228,7 +226,7 @@ func TestInitGameStructure_passing_valid_args_expect_no_error(t *testing.T) {
 		{strings.Split("8 * 8 - 2 2", " ")},
 	}
 	for i, tt := range tests {
-		_, _, err := game_application.InitGameStructure(tt.args)
+		_, _, err := InitGameStructure(tt.args)
 		if err != nil {
 			t.Errorf("test %d: got error `%s` where we didnt expect", i, err)
 		}
@@ -257,7 +255,7 @@ func TestInitGameStructure_passing_operators_only_expect_its_ascii_representatio
 		{strings.Split("- * / + * *", " ")},
 	}
 	for i, tt := range tests {
-		_, operators, _ := game_application.InitGameStructure(tt.args)
+		_, operators, _ := InitGameStructure(tt.args)
 		for j, v := range operators {
 			if v != results[i].args[j] {
 				t.Errorf("test %d: expect %d but got %d", i, results[i].args[j], v)
@@ -282,7 +280,7 @@ func TestInitGameStructure_passing_numbers_only_expect_its_integer_representatio
 		{strings.Split("9 8 7 6 5 4", " ")},
 	}
 	for i, tt := range tests {
-		numbers, _, _ := game_application.InitGameStructure(tt.args)
+		numbers, _, _ := InitGameStructure(tt.args)
 		for j, v := range numbers {
 			if v != results[i].args[j] {
 				t.Errorf("test %d: expect %d but got %d", i, results[i].args[j], v)
@@ -307,7 +305,7 @@ func TestInitGameStructure_checking_number_slice_expect_its_integer_representati
 		{strings.Split("0 0 2 * 4 0", " ")},
 	}
 	for i, tt := range tests {
-		numbers, _, _ := game_application.InitGameStructure(tt.args)
+		numbers, _, _ := InitGameStructure(tt.args)
 		for j, v := range numbers {
 			if v != results[i].args[j] {
 				t.Errorf("test %d: expect %d but got %d", i, results[i].args[j], v)
@@ -332,7 +330,7 @@ func TestInitGameStructure_checking_op_slice_expect_its_ascii_representations_an
 		{strings.Split("0 0 2 * 4 0", " ")},
 	}
 	for i, tt := range tests {
-		_, operators, _ := game_application.InitGameStructure(tt.args)
+		_, operators, _ := InitGameStructure(tt.args)
 		for j, v := range operators {
 			if v != results[i].args[j] {
 				t.Errorf("test %d: expect %d but got %d", i, results[i].args[j], v)
@@ -351,7 +349,7 @@ func TestIsAvaiableInSolution_passing_NA_arg_expect_false(t *testing.T) {
 		{'8'}, {'9'}, {'-'}, {'*'}, {'/'},
 	}
 	for i, tt := range tests {
-		got := game_application.IsAvaiableInSolution(tt.arg, solution)
+		got := IsAvaiableInSolution(tt.arg, solution)
 		if got != expected {
 			t.Errorf("test %d: expected %v but got %v", i, expected, got)
 		}
@@ -367,7 +365,7 @@ func TestIsAvaiableInSolution_passing_avaiable_arg_expect_true(t *testing.T) {
 		{'0'}, {'2'}, {'+'},
 	}
 	for i, tt := range tests {
-		got := game_application.IsAvaiableInSolution(tt.arg, solution)
+		got := IsAvaiableInSolution(tt.arg, solution)
 		if got != expected {
 			t.Errorf("test %d: expected %v but got %v", i, expected, got)
 		}
@@ -384,7 +382,7 @@ func TestIsInRightSpot_passing_arg_in_wrong_spot_expect_false(t *testing.T) {
 		{'+'},
 	}
 	for i, tt := range tests {
-		got := game_application.IsInRightSpot(tt.arg, rune(solution[0]))
+		got := IsInRightSpot(tt.arg, rune(solution[0]))
 		if got != expected {
 			t.Errorf("test %d: expected %v but got %v", i, expected, got)
 		}
@@ -400,7 +398,7 @@ func TestIsInRightSpot_passing_arg_in_right_spot_expect_true(t *testing.T) {
 		{'+'},
 	}
 	for i, tt := range tests {
-		got := game_application.IsInRightSpot(tt.arg, rune(solution[3]))
+		got := IsInRightSpot(tt.arg, rune(solution[3]))
 		if got != expected {
 			t.Errorf("test %d: expected %v but got %v", i, expected, got)
 		}
@@ -419,7 +417,7 @@ func TestGetHints_passing_args_unavaiable_in_the_solution_expect_X_hints(t *test
 		{"7-35*9"},
 	}
 	for i, tt := range tests {
-		got := game_application.GetHints(tt.args, solution)
+		got := GetHints(tt.args, solution)
 		if got != expected {
 			t.Errorf("test %d: expected %v but got %v", i, expected, got)
 		}
@@ -442,7 +440,7 @@ func TestGetHints_passing_args_avaiable_in_the_solution_but_in_the_wrong_spot_ex
 		{"4/1275"},
 	}
 	for i, tt := range tests {
-		got := game_application.GetHints(tt.args, solution)
+		got := GetHints(tt.args, solution)
 		if got != expected[i] {
 			t.Errorf("test %d: expected %v but got %v", i, expected[i], got)
 		}
@@ -463,14 +461,14 @@ func TestInitHint_passing_args_avaiable_in_the_solution_that_is_in_the_right_spo
 		{"133333"},
 	}
 	for i, tt := range tests {
-		got := game_application.GetHints(tt.args, solution)
+		got := GetHints(tt.args, solution)
 		if got != expected[i] {
 			t.Errorf("test %d: expected %v but got %v", i, expected[i], got)
 		}
 	}
 }
 
-func TestInitHint_simulating_a_game_expect_TCX_hints(t *testing.T) {
+func TestInitHint_simulating_a_utils(t *testing.T) {
 	solution := "120/40"
 	expected := []string{"XXTXTC", "TCTXCC", "XXCXXC", "TTCCCX", "TCTTTC"}
 	var tests = []struct {
@@ -483,7 +481,7 @@ func TestInitHint_simulating_a_game_expect_TCX_hints(t *testing.T) {
 		{"42/010"},
 	}
 	for i, tt := range tests {
-		got := game_application.GetHints(tt.args, solution)
+		got := GetHints(tt.args, solution)
 		if got != expected[i] {
 			t.Errorf("test %d: expected %v but got %v", i, expected[i], got)
 		}
@@ -499,9 +497,53 @@ func TestInitHint_passing_solution_expect_CCCCCC(t *testing.T) {
 		{"120/40"},
 	}
 	for i, tt := range tests {
-		got := game_application.GetHints(tt.args, solution)
+		got := GetHints(tt.args, solution)
 		if got != expected[i] {
 			t.Errorf("test %d: expected %v but got %v", i, expected[i], got)
+		}
+	}
+}
+
+func TestIsValidArg_passing_invalid_arg_expect_false(t *testing.T) {
+	expected := false
+	symbols := []int{'_', '"', '?', '>', '.', '!', '<', '=', '~', '`', ' ', '#'}
+	for _, symbol := range symbols {
+		got := IsValidArg(symbol)
+		if got != expected {
+			t.Errorf("expected %t but got %t", expected, got)
+		}
+	}
+}
+
+func TestIsValidArg_passing_valid_args_expect_true(t *testing.T) {
+	expected := true
+	symbols := []int{'+', '-', '*', '/'}
+	for _, symbol := range symbols {
+		got := IsValidArg(symbol)
+		if got != expected {
+			t.Errorf("expected %t but got %t", expected, got)
+		}
+	}
+}
+
+func TestIsValidArg_Chec_if_arg_is_digit_passing_nondigit_arg_expect_false(t *testing.T) {
+	expected := false
+	symbols := []int{'_', '\'', '#', ',', ' ', '=', '<', '?', '>', '!', '"', 'x', -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	for _, symbol := range symbols {
+		got := IsValidArg(symbol)
+		if got != expected {
+			t.Errorf("expected %t but got %t (%c is valid)", expected, got, symbol)
+		}
+	}
+}
+
+func TestIsValidArg_arg_is_digit_passing_digit_arg_expect_true(t *testing.T) {
+	expected := true
+	symbols := []int{'1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 48, 49, 50, 51, 52, 53, 54, 55, 56, 57}
+	for _, symbol := range symbols {
+		got := IsValidArg(symbol)
+		if got != expected {
+			t.Errorf("expected %t but got %t (%c is invalid)", expected, got, symbol)
 		}
 	}
 }

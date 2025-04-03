@@ -58,7 +58,9 @@ async function fecth_expression(req) {
 		},
 		body: JSON.stringify(update),
 	};
-	let response = await fetch(`http://labs-bexs-u8968B-Y.42sp.org.br:5011`, options)
+
+	const baseUrl = window.API_URL || "http://localhost:8080";
+	let response = await fetch(baseUrl, options)
 	.then(encoded => encoded.json())
 	.then(response => response)
 	return(response)
