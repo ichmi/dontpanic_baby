@@ -1,0 +1,18 @@
+runtime: custom
+env: flex
+
+entrypoint: ./app
+
+automatic_scaling:
+  min_num_instances: 1
+  max_num_instances: 2
+
+resources:
+  cpu: 1
+  memory_gb: 0.5
+  disk_size_gb: 10
+
+service: flex-svc
+
+env_variables:
+  API_URL: "https://flex-svc-dot-evident-lock-455503-a2.rj.r.appspot.com/"
