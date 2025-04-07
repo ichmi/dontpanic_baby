@@ -37,3 +37,21 @@ jobs:
           --platform managed \
           --region ${{ secrets.GCP_REGION }} \
           --allow-unauthenticated
+
+    - name: Get deployed URL
+      id: get-url
+      run: |
+        URL=$(gcloud run services describe ${{ secrets.GCP_SERVICE }} \
+          --platform managed \
+          --region ${{ secrets.GCP_REGION }} \
+          --format='value(status.url)')
+        echo "url=$URL" >> $GITHUB_OUTPUT
+
+    - name: Update API_URL env var
+      run: |
+        gcloud run services update ${{ secrets.GCP_SERVICE }} \
+          --region ${{ secrets.GCP_REGION }} \
+          --platform managed \
+          --set-env-vars=API_URL=${{ steps.get-url.outputs.url }}
+
+    
